@@ -1,5 +1,5 @@
-import { OperatorApp } from '../components/OperatorApp';
+import { SecureOperatorApp } from '../components/SecureOperatorApp';
 
 export default function Home(){
-  return <OperatorApp/>;
+  return <SecureOperatorApp/>;
 }
