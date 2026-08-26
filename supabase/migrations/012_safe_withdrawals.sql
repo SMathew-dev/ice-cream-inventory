@@ -37,3 +37,6 @@ begin
     values(v_product,'DAIRY_BAR',v_qty,'DAIRY_BAR_BATCH',v_batch,'Dairy Bar withdrawal','dairy-bar:'||v_batch::text||':'||v_line::text);
   end loop;
 end; $$;
+
+alter function complete_order_pickup(uuid,uuid) set search_path = public, pg_temp;
+alter function withdraw_dairy_bar(jsonb) set search_path = public, pg_temp;
