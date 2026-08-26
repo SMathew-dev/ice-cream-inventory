@@ -1,61 +1,234 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#102f50">
-<title>Ice Cream Inventory</title>
-<style>
-:root{--navy:#102f50;--blue:#21639e;--bg:#f4f7fb;--card:#fff;--text:#17324a;--muted:#708090;--line:#dfe7ef;--good:#23734b;--warn:#9a6800;--danger:#a33131}*{box-sizing:border-box}body{margin:0;font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--bg);color:var(--text)}button,input,select{font:inherit}button{cursor:pointer}.hidden{display:none!important}.auth{min-height:100dvh;display:grid;place-items:center;padding:24px}.auth-card,.card,.metric{background:#fff;border:1px solid var(--line);box-shadow:0 4px 18px rgba(18,50,80,.05)}.auth-card{width:min(430px,100%);padding:28px;border-radius:20px}.auth-card h1{margin:5px 0 8px}.eyebrow{margin:0;color:#728ba1;font-size:11px;font-weight:850;letter-spacing:.12em}.muted,.tiny{color:var(--muted)}.tiny{font-size:11px}.form{display:grid;gap:11px}.form label{display:grid;gap:5px;font-size:12px;font-weight:750;color:#5d7184}.form input,.form select,select{border:1px solid #cbd7e2;border-radius:9px;padding:10px;background:#fff;color:var(--text);min-width:0}.primary,.secondary,.danger{border-radius:9px;padding:9px 12px;font-weight:780}.primary{border:0;background:var(--blue);color:#fff}.secondary{border:1px solid #cbd7e2;background:#fff;color:var(--text)}.danger{border:1px solid #efc7c7;background:#fff5f5;color:var(--danger)}.shell{min-height:100dvh;display:grid;grid-template-columns:230px 1fr}.sidebar{background:var(--navy);color:#fff;padding:24px 17px;display:flex;flex-direction:column;gap:22px}.brand{font-size:21px;font-weight:900;line-height:1}.brand span{font-size:11px;letter-spacing:.2em;color:#a9c6df}.sidebar nav{display:grid;gap:6px}.sidebar nav button{border:0;border-radius:9px;background:transparent;color:#ccdae7;text-align:left;padding:10px 11px;font-weight:700}.sidebar nav button.active,.sidebar nav button:hover{background:#1c4973;color:#fff}.signout{margin-top:auto;border:1px solid #557694;background:transparent;color:#fff;border-radius:9px;padding:9px}.content{padding:25px 30px 50px}.top{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:18px}.top h1{margin:3px 0 0}.badge{padding:7px 10px;border-radius:999px;background:#e8f5ed;color:#227046;font-size:11px;font-weight:850}.notice{margin:0 0 13px;padding:11px 13px;border-radius:10px;background:#edf5fb;border:1px solid #d4e5f3;color:#315e83}.notice.error{background:#fff0f0;border-color:#efd0d0;color:#963535}.metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:11px;margin-bottom:14px}.metric,.card{border-radius:15px;padding:16px}.metric span,.metric small{display:block;color:var(--muted);font-size:12px}.metric strong{display:block;font-size:27px;margin:3px 0}.card{margin-bottom:14px}.card h2{margin:3px 0 13px;font-size:19px}.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}.table-wrap{overflow:auto}.table{width:100%;border-collapse:collapse;font-size:13px}.table th{text-align:left;color:#6d7d8c;background:#f7f9fb;padding:9px}.table td{padding:9px;border-top:1px solid #edf1f4;vertical-align:top}.actions{display:flex;gap:6px;flex-wrap:wrap}.screen{display:none}.screen.active{display:block}.pick{padding:8px 10px;margin-top:7px;background:#eef5fb;border-radius:9px;font-size:12px}.freezer-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:9px}.freezer-wall{border:1px solid var(--line);border-radius:11px;padding:9px;background:#fbfcfe;min-height:85px}.freezer-wall h3{margin:0 0 7px;font-size:12px}.stack{padding:7px;margin:5px 0;background:#edf4fa;border-radius:8px;font-size:11px}.stack b{font-size:12px}.cart-line{display:flex;justify-content:space-between;gap:8px;padding:8px 9px;background:#f7f9fb;border-radius:8px;margin:5px 0}.integrity-ok{color:var(--good);font-weight:800}.integrity-bad{color:var(--danger);font-weight:850}@media(max-width:900px){.shell{grid-template-columns:1fr}.sidebar{position:sticky;top:0;z-index:20;flex-direction:row;align-items:center;padding:10px 12px;overflow:auto}.brand{font-size:14px;min-width:125px}.brand span{font-size:8px}.sidebar nav{display:flex}.sidebar nav button{white-space:nowrap;padding:8px}.signout{margin:0 0 0 auto;white-space:nowrap}.content{padding:16px}.grid2{grid-template-columns:1fr}.freezer-grid{grid-template-columns:1fr 1fr}}@media(max-width:560px){.metrics{grid-template-columns:1fr 1fr}.freezer-grid{grid-template-columns:1fr}.content{padding:12px}.metric{padding:12px}.metric strong{font-size:22px}.top{align-items:flex-start}}
-</style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#111827">
+  <meta name="description" content="Operator-first ice cream inventory, State Lab release, freezer mapping and order control.">
+  <title>Ice Cream Operations</title>
+  <link rel="stylesheet" href="./app.css">
 </head>
 <body>
-<div id="auth" class="auth"><section class="auth-card"><p class="eyebrow">DAIRY PLANT PILOT</p><h1>Ice Cream Inventory</h1><p class="muted">Sign in to the live inventory system.</p><form id="authForm" class="form"><label>Email<input id="email" type="email" autocomplete="email" required></label><label>Password<input id="password" type="password" autocomplete="current-password" minlength="6" required></label><button class="primary" type="submit">Sign in</button></form><button id="signup" class="secondary" style="width:100%;margin-top:8px">Create test operator account</button><p id="authMsg" class="tiny"></p></section></div>
-<div id="app" class="shell hidden"><aside class="sidebar"><div class="brand">ICE CREAM<br><span>INVENTORY</span></div><nav id="nav"><button data-screen="dashboard" class="active">Dashboard</button><button data-screen="orders">Customer Orders</button><button data-screen="production">Production / Lab</button><button data-screen="dairy">Dairy Bar</button><button data-screen="freezer">Freezer Map</button><button data-screen="count">Hard Count</button><button data-screen="storefront">Storefront</button></nav><button id="signout" class="signout">Sign out</button></aside><main class="content"><header class="top"><div><p class="eyebrow">DAIRY PLANT</p><h1 id="screenTitle">Inventory Control</h1></div><span class="badge">LIVE DATABASE</span></header><div id="msg"></div>
-<section id="dashboard" class="screen active"><div class="metrics"><div class="metric"><span>Available</span><strong id="mAvailable">0</strong><small>can be ordered</small></div><div class="metric"><span>Reserved</span><strong id="mReserved">0</strong><small>waiting to pull</small></div><div class="metric"><span>Lab hold</span><strong id="mHold">0</strong><small>-40°F pending</small></div><div class="metric"><span>Storefront</span><strong id="mStore">0</strong><small>not for sale</small></div></div><div class="card"><p class="eyebrow">LIVE INVENTORY</p><h2>Saleable stock</h2><div id="inventoryTable"></div></div><div class="card"><p class="eyebrow">SYSTEM CHECK</p><h2>Inventory ↔ freezer integrity</h2><div id="integrityTable"></div></div></section>
-<section id="orders" class="screen"><div class="grid2"><div class="card"><p class="eyebrow">PHONE ORDER</p><h2>Reserve customer order</h2><div class="form"><label>Customer name<input id="orderCustomer"></label><label>Phone<input id="orderPhone"></label><div class="grid2"><label>Product<select id="orderProduct"></select></label><label>Quantity<input id="orderQty" type="number" min="1" value="1"></label></div><button id="addOrderLine" class="secondary">Add product</button><div id="orderCart"></div><button id="reserveOrder" class="primary">Reserve Order</button></div></div><div class="card"><p class="eyebrow">RESERVED / READY</p><h2>Orders to Pull</h2><div id="openOrders"></div></div></div></section>
-<section id="production" class="screen"><div class="grid2"><div class="card"><p class="eyebrow">PROCESSING DAY</p><h2>Add production</h2><div class="form"><label>Julian date<input id="prodJulian" type="number" min="1" max="366"></label><label>Flavor<select id="prodFlavor"></select></label><label>Package<select id="prodSize"><option value="3_GALLON">3 gal</option><option value="48_OZ">48 oz</option></select></label><label>Total produced<input id="prodTotal" type="number" min="1" value="1"></label><label>Storefront / imperfect<input id="prodStore" type="number" min="0" value="0"></label><button id="addProduction" class="primary">Add Production</button></div></div><div class="card"><p class="eyebrow">STATE LAB</p><h2>Pending release</h2><div id="labQueue"></div></div></div></section>
-<section id="dairy" class="screen"><div class="card"><p class="eyebrow">PHYSICAL WITHDRAWAL</p><h2>Dairy Bar Pull</h2><div class="form"><label>Product<select id="dairyProduct"></select></label><label>Quantity<input id="dairyQty" type="number" min="1" value="1"></label><button id="dairySubmit" class="primary">Confirm Withdrawal</button><p class="tiny">Deducts saleable inventory and the exact FIFO freezer stack.</p></div></div></section>
-<section id="freezer" class="screen"><div class="card"><p class="eyebrow">PHYSICAL LOCATION</p><h2>Freezer Map</h2><div id="freezerMap"></div></div></section>
-<section id="count" class="screen"><div class="card"><p class="eyebrow">SAFE RECONCILIATION</p><h2>Count / Fix a physical stack</h2><div class="form"><label>Saleable stack<select id="countPlacement"></select></label><label>Physical quantity<input id="countQty" type="number" min="0"></label><label>Reason<input id="countReason" placeholder="Weekly physical count correction"></label><button id="countSubmit" class="primary">Fix Stack Count</button><p class="tiny">This changes the freezer stack and ledger together, preserving inventory/location integrity.</p></div></div></section>
-<section id="storefront" class="screen"><div class="card"><p class="eyebrow">NOT FOR SALE</p><h2>Storefront / imperfect inventory</h2><div id="storefrontTable"></div></div></section>
-</main></div>
-<script type="module">
-import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
-const SUPABASE_URL='https://atttqdrndjlelrrlupkw.supabase.co';
-const SUPABASE_KEY='sb_publishable_Juq6FUFvX8ZT2BUd_C7T-g_6Tlyy0tL';
-const sb=createClient(SUPABASE_URL,SUPABASE_KEY,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});
-const $=id=>document.getElementById(id);let inventory=[],lots=[],orders=[],slots=[],placements=[],integrity=[],orderCart=[];
-const titles={dashboard:'Inventory Control',orders:'Customer Orders',production:'Production & Lab',dairy:'Dairy Bar',freezer:'Freezer Map',count:'Hard Count / Fix Number',storefront:'Storefront Inventory'};
-const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const pkg=s=>s==='3_GALLON'?'3 gal':'48 oz';
-function message(t,e=false){$('msg').innerHTML=t?`<div class="notice ${e?'error':''}">${esc(t)}</div>`:''}
-function table(h,rows){return `<div class="table-wrap"><table class="table"><thead><tr>${h.map(x=>`<th>${x}</th>`).join('')}</tr></thead><tbody>${rows.map(r=>`<tr>${r.map(v=>`<td>${v}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`}
-function switchAuth(session){$('auth').classList.toggle('hidden',!!session);$('app').classList.toggle('hidden',!session);if(session)refreshAll()}
-async function refreshAll(){message('Refreshing live inventory…');try{const q=await Promise.all([sb.from('inventory_snapshot').select('*').order('flavor'),sb.from('pending_lab_lots').select('*').order('julian'),sb.from('open_order_queue').select('*').order('created_at'),sb.from('freezer_slots').select('*').eq('active',true).order('freezer').order('wall').order('shelf').order('position'),sb.from('freezer_placement_view').select('*').order('freezer').order('wall').order('shelf').order('position'),sb.from('inventory_location_integrity').select('*').order('flavor')]);q.forEach(x=>{if(x.error)throw x.error});inventory=(q[0].data||[]).map(r=>({productId:r.product_id,flavor:r.flavor,packageSize:r.package_size,onHand:r.on_hand||0,reserved:r.reserved||0,available:r.available||0,labHold:r.lab_hold||0,storefront:r.storefront||0}));lots=q[1].data||[];orders=q[2].data||[];slots=q[3].data||[];placements=q[4].data||[];integrity=q[5].data||[];render();message('')}catch(e){message(e.message||'Database refresh failed.',true)}}
-function productOptions(){return inventory.map(x=>`<option value="${x.productId}">${esc(x.flavor)} · ${pkg(x.packageSize)} · ${x.available} available</option>`).join('')}
-function render(){const sum=k=>inventory.reduce((n,x)=>n+x[k],0);$('mAvailable').textContent=sum('available');$('mReserved').textContent=sum('reserved');$('mHold').textContent=sum('labHold');$('mStore').textContent=sum('storefront');$('inventoryTable').innerHTML=table(['Flavor','Package','Available','Reserved','Lab hold'],inventory.map(x=>[esc(x.flavor),pkg(x.packageSize),`<b>${x.available}</b> / ${x.onHand}`,x.reserved,x.labHold]));$('storefrontTable').innerHTML=table(['Flavor','Package','Storefront','Saleable'],inventory.map(x=>[esc(x.flavor),pkg(x.packageSize),`<b>${x.storefront}</b>`,x.available]));$('integrityTable').innerHTML=table(['Product','Ledger','Located','Difference','Status'],integrity.map(x=>[`${esc(x.flavor)} · ${pkg(x.package_size)}`,x.on_hand,x.located_quantity,x.difference,`<span class="${x.integrity_status==='MATCH'?'integrity-ok':'integrity-bad'}">${esc(x.integrity_status)}</span>`]));const op=productOptions();['orderProduct','dairyProduct'].forEach(id=>$(id).innerHTML=op);const flavors=[...new Set(inventory.map(x=>x.flavor))];$('prodFlavor').innerHTML=flavors.map(f=>`<option>${esc(f)}</option>`).join('');$('countPlacement').innerHTML=placements.filter(p=>p.freezer==='-20°F').map(p=>`<option value="${p.id}">${esc(p.flavor)} · ${pkg(p.package_size)} · J${p.julian} · ${p.wall}/${p.shelf}/${p.position} · ${p.quantity} units</option>`).join('');renderLab();renderOrders();renderFreezer();renderCart()}
-function renderLab(){const sale=slots.filter(s=>s.freezer==='-20°F');$('labQueue').innerHTML=lots.length?lots.map(l=>`<div style="padding:10px 0;border-top:1px solid #edf1f4"><b>Julian ${l.julian} · ${esc(l.flavor)} · ${pkg(l.package_size)}</b><div class="tiny">${l.quantity} units in -40°F hold</div><div class="actions" style="margin-top:7px"><select id="slot-${l.id}">${sale.map(s=>`<option value="${s.id}">${s.wall} · ${s.shelf} · Position ${s.position}</option>`).join('')}</select><button class="primary" data-pass="${l.id}">PASS + Place</button><button class="danger" data-fail="${l.id}">FAIL</button></div></div>`).join(''):'<p class="muted">No lots waiting.</p>';document.querySelectorAll('[data-pass]').forEach(b=>b.onclick=()=>labPass(b.dataset.pass));document.querySelectorAll('[data-fail]').forEach(b=>b.onclick=()=>labFail(b.dataset.fail))}
-async function labPass(id){await act(sb.rpc('release_and_place_lot',{p_run_id:id,p_slot_id:$('slot-'+id).value}),'Lab PASS recorded and placed in -20°F.')}
-async function labFail(id){if(confirm('Mark this run FAILED and dispose the good quantity?'))await act(sb.rpc('fail_lab_lot',{p_run_id:id}),'Lab FAIL recorded.')}
-function groupedOrders(){const m=new Map();orders.forEach(r=>{if(!m.has(r.order_id))m.set(r.order_id,{id:r.order_id,name:r.customer_name,items:[]});m.get(r.order_id).items.push(r)});return [...m.values()]}
-function renderOrders(){const list=groupedOrders();$('openOrders').innerHTML=list.length?list.map(o=>`<div style="padding:10px 0;border-top:1px solid #edf1f4"><b>${esc(o.name)}</b><div class="tiny">${o.items.map(i=>`${i.quantity-i.quantity_pulled} ${esc(i.flavor)} ${pkg(i.package_size)}`).join(' · ')}</div><div id="pick-${o.id}"></div><div class="actions" style="margin-top:7px"><button class="secondary" data-pick="${o.id}">Where to Pull</button><button class="primary" data-complete="${o.id}">Pulled / Complete</button><button class="danger" data-cancel="${o.id}">Cancel</button></div></div>`).join(''):'<p class="muted">No orders waiting.</p>';document.querySelectorAll('[data-pick]').forEach(b=>b.onclick=()=>showPick(b.dataset.pick));document.querySelectorAll('[data-complete]').forEach(b=>b.onclick=()=>completeOrder(b.dataset.complete));document.querySelectorAll('[data-cancel]').forEach(b=>b.onclick=()=>cancelOrder(b.dataset.cancel))}
-async function showPick(id){try{const o=groupedOrders().find(x=>x.id===id),lines=[];for(const i of o.items){const {data,error}=await sb.rpc('get_fifo_pick_plan',{p_product_id:i.product_id,p_quantity:i.quantity-i.quantity_pulled});if(error)throw error;(data||[]).forEach(p=>lines.push(`${esc(i.flavor)} — Pull ${p.quantity_to_pull} · Julian ${p.julian} · ${p.wall}/${p.shelf}/Position ${p.slot_position}`))}$('pick-'+id).innerHTML=`<div class="pick">${lines.join('<br>')}</div>`}catch(e){message(e.message,true)}}
-async function completeOrder(id){if(confirm('Confirm these units have physically left the freezer?'))await act(sb.rpc('complete_order_pickup',{p_order_id:id}),'Order completed. Inventory and freezer stacks deducted.')}
-async function cancelOrder(id){await act(sb.rpc('cancel_reserved_order',{p_order_id:id}),'Order cancelled; reservation released.')}
-function renderFreezer(){const walls=['BACK','LEFT','RIGHT','ENTRANCE'];$('freezerMap').innerHTML=['-20°F','-40°F'].map(f=>`<h3>${f}</h3><div class="freezer-grid">${walls.map(w=>`<div class="freezer-wall"><h3>${w} WALL</h3>${placements.filter(p=>p.freezer===f&&p.wall===w).map(p=>`<div class="stack"><b>${esc(p.flavor)} · ${pkg(p.package_size)}</b><br>Julian ${p.julian} · ${p.shelf} · Position ${p.position} · <b>${p.quantity}</b></div>`).join('')}</div>`).join('')}</div>`).join('')}
-function renderCart(){$('orderCart').innerHTML=orderCart.length?orderCart.map((x,i)=>`<div class="cart-line"><span>${esc(x.label)} × ${x.quantity}</span><button class="danger" data-remove="${i}">Remove</button></div>`).join(''):'<p class="tiny">Add one or more products.</p>';document.querySelectorAll('[data-remove]').forEach(b=>b.onclick=()=>{orderCart.splice(Number(b.dataset.remove),1);renderCart()})}
-$('addOrderLine').onclick=e=>{e.preventDefault();const id=$('orderProduct').value,q=Number($('orderQty').value),p=inventory.find(x=>x.productId===id);if(!p||!Number.isInteger(q)||q<1)return message('Choose a product and valid quantity.',true);const ex=orderCart.find(x=>x.productId===id);if(ex)ex.quantity+=q;else orderCart.push({productId:id,quantity:q,label:`${p.flavor} · ${pkg(p.packageSize)}`});renderCart()};
-$('reserveOrder').onclick=async()=>{const name=$('orderCustomer').value.trim();if(!name||!orderCart.length)return message('Customer name and at least one product are required.',true);const {error}=await sb.rpc('create_and_reserve_order',{p_customer_name:name,p_customer_phone:$('orderPhone').value||null,p_items:orderCart.map(x=>({productId:x.productId,quantity:x.quantity}))});if(error)return message(error.message,true);orderCart=[];$('orderCustomer').value='';renderCart();await refreshAll();message('Customer order reserved.')};
-$('addProduction').onclick=async()=>{const j=Number($('prodJulian').value),t=Number($('prodTotal').value),s=Number($('prodStore').value);if(!Number.isInteger(j)||j<1||j>366||!Number.isInteger(t)||t<1||!Number.isInteger(s)||s<0||s>t)return message('Check Julian date and quantities.',true);await act(sb.rpc('add_production_run',{p_julian:j,p_flavor:$('prodFlavor').value,p_package_size:$('prodSize').value,p_total_produced:t,p_storefront_quantity:s}),'Production recorded in -40°F lab hold.')};
-$('dairySubmit').onclick=async()=>{const id=$('dairyProduct').value,q=Number($('dairyQty').value);if(!id||!Number.isInteger(q)||q<1)return message('Choose a product and quantity.',true);if(confirm('Confirm Dairy Bar is physically taking these units now?'))await act(sb.rpc('withdraw_dairy_bar',{p_items:[{productId:id,quantity:q}]}),'Dairy Bar withdrawal recorded.')};
-$('countPlacement').onchange=()=>{const p=placements.find(x=>x.id===$('countPlacement').value);if(p)$('countQty').value=p.quantity};
-$('countSubmit').onclick=async()=>{const id=$('countPlacement').value,q=Number($('countQty').value);if(!id||!Number.isInteger(q)||q<0)return message('Choose a stack and enter a valid physical count.',true);await act(sb.rpc('reconcile_placement_count',{p_placement_id:id,p_physical_quantity:q,p_reason:$('countReason').value||'Physical stack count correction'}),'Stack and inventory ledger reconciled together.')};
-async function act(p,ok){message('Saving…');const {error}=await p;if(error){message(error.message,true);return false}await refreshAll();message(ok);return true}
-$('authForm').onsubmit=async e=>{e.preventDefault();$('authMsg').textContent='Signing in…';const {error}=await sb.auth.signInWithPassword({email:$('email').value,password:$('password').value});$('authMsg').textContent=error?error.message:'Signed in.'};
-$('signup').onclick=async()=>{const email=$('email').value,password=$('password').value;if(!email||password.length<6)return $('authMsg').textContent='Enter email and a password of at least 6 characters.';$('authMsg').textContent='Creating account…';const {data,error}=await sb.auth.signUp({email,password,options:{emailRedirectTo:location.href}});$('authMsg').textContent=error?error.message:(data.session?'Account created and signed in.':'Account created. Check your email to confirm it, then sign in.')};
-$('signout').onclick=()=>sb.auth.signOut();$('nav').querySelectorAll('button').forEach(b=>b.onclick=()=>{$('nav').querySelectorAll('button').forEach(x=>x.classList.remove('active'));b.classList.add('active');document.querySelectorAll('.screen').forEach(x=>x.classList.remove('active'));$(b.dataset.screen).classList.add('active');$('screenTitle').textContent=titles[b.dataset.screen]});
-sb.auth.onAuthStateChange((_e,s)=>switchAuth(s));const {data:{session}}=await sb.auth.getSession();switchAuth(session);
-</script>
+  <div id="loadingOverlay" class="loading-overlay hidden" aria-live="polite">
+    <div class="loader-card"><span class="spinner"></span><span id="loadingText">Working…</span></div>
+  </div>
+
+  <section id="auth" class="auth-shell">
+    <div class="auth-visual">
+      <div class="auth-brand"><span class="auth-brand-mark">IC</span><span>Ice Cream Operations</span></div>
+      <div class="auth-copy">
+        <p class="kicker">Cold storage intelligence</p>
+        <h1>Know what you have. Know exactly where it is.</h1>
+        <p>Production, State Lab release, customer reservations, Dairy Bar pulls and freezer locations stay synchronized from one operator workflow.</p>
+      </div>
+      <div class="auth-points">
+        <span class="auth-point">Julian lot traceability</span>
+        <span class="auth-point">FIFO picking</span>
+        <span class="auth-point">-40°F → -20°F release</span>
+        <span class="auth-point">Physical reconciliation</span>
+      </div>
+    </div>
+    <div class="auth-panel">
+      <div class="auth-card">
+        <p class="kicker">Operator access</p>
+        <h2>Sign in</h2>
+        <p>Use an authorized operator account to access the live inventory system.</p>
+        <form id="authForm" class="form">
+          <div class="field"><label for="email">Email</label><input id="email" type="email" autocomplete="email" required></div>
+          <div class="field"><label for="password">Password</label><input id="password" type="password" autocomplete="current-password" minlength="6" required></div>
+          <button class="btn btn-primary btn-block" type="submit">Sign in to operations</button>
+        </form>
+        <button id="signup" class="btn btn-secondary btn-block" style="margin-top:9px" type="button">Create test operator account</button>
+        <div id="authMsg" class="auth-message"></div>
+        <div class="auth-note">Pilot environment. Inventory changes are written to the live Supabase ledger and should be made only with test data until plant acceptance testing is complete.</div>
+      </div>
+    </div>
+  </section>
+
+  <div id="app" class="app-shell hidden">
+    <aside id="sidebar" class="sidebar">
+      <div class="logo">
+        <div class="logo-mark">IC</div>
+        <div class="logo-copy"><strong>Ice Cream Ops</strong><small>Inventory control</small></div>
+      </div>
+
+      <div class="nav-section-label">Operations</div>
+      <nav id="nav" class="nav">
+        <button class="active" data-screen="dashboard" type="button">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 13h6V4H4v9Zm0 7h6v-4H4v4Zm10 0h6v-9h-6v9Zm0-16v4h6V4h-6Z"/></svg>
+          Overview
+        </button>
+        <button data-screen="production" type="button">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 19V9l5 3V7l5 3V4h6v15H4Z"/><path d="M8 19v-3h3v3m3 0v-4h3v4"/></svg>
+          Production & Lab
+        </button>
+        <button data-screen="orders" type="button">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 3h12v18H6z"/><path d="M9 7h6M9 11h6M9 15h3"/></svg>
+          Customer Orders
+        </button>
+        <button data-screen="dairy" type="button">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M8 4h8l2 4v11H6V8l2-4Z"/><path d="M8 8h8M9 12h6"/></svg>
+          Dairy Bar
+        </button>
+        <button data-screen="freezer" type="button">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M5 10h14M15 6h1M15 14h1"/></svg>
+          Freezer Map
+        </button>
+      </nav>
+
+      <div class="nav-section-label">Control</div>
+      <nav class="nav">
+        <button data-screen="count" type="button">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 4h14v16H5z"/><path d="m8 9 2 2 5-5M8 15h8"/></svg>
+          Physical Count
+        </button>
+        <button data-screen="storefront" type="button">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 9h16l-2-5H6L4 9Z"/><path d="M5 9v11h14V9M9 20v-6h6v6"/></svg>
+          Storefront
+        </button>
+      </nav>
+
+      <div class="sidebar-bottom">
+        <div class="operator-chip">
+          <div id="operatorInitial" class="operator-avatar">O</div>
+          <div class="operator-meta"><strong>Operator</strong><small id="operatorEmail">Signed in</small></div>
+        </div>
+        <button id="signout" class="signout" type="button">Sign out</button>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div class="topbar-left">
+          <button id="mobileMenu" class="mobile-menu" type="button" aria-label="Open navigation">☰</button>
+          <div class="page-heading"><strong id="screenTitle">Operations</strong><small id="screenSubtitle">Live stock, queues and freezer integrity</small></div>
+        </div>
+        <div class="topbar-right">
+          <button id="refreshBtn" class="refresh-btn" type="button">↻ Refresh</button>
+          <div class="live-chip"><span class="live-dot"></span><span>LIVE</span><span>Supabase</span></div>
+        </div>
+      </header>
+
+      <div class="workspace">
+        <div id="msg"></div>
+
+        <section id="dashboard" class="screen active">
+          <div class="hero">
+            <div>
+              <p class="kicker">Plant inventory control</p>
+              <h1>One place for every ice cream movement.</h1>
+              <p>Operators record what happened. The system keeps available stock, reservations, State Lab hold and physical freezer locations synchronized.</p>
+            </div>
+            <div class="quick-actions">
+              <button class="quick-action" data-quick="production" type="button"><span class="quick-icon">＋</span><span>Add production</span></button>
+              <button class="quick-action" data-quick="production" type="button"><span class="quick-icon">✓</span><span>Release lab lot</span></button>
+              <button class="quick-action" data-quick="orders" type="button"><span class="quick-icon">#</span><span>New customer order</span></button>
+              <button class="quick-action" data-quick="dairy" type="button"><span class="quick-icon">→</span><span>Dairy Bar pull</span></button>
+            </div>
+          </div>
+
+          <div class="metrics">
+            <div class="metric"><div class="metric-top"><span class="metric-label">Available to order</span><span class="metric-icon blue">A</span></div><strong id="mAvailable">—</strong><small>saleable less active reservations</small></div>
+            <div class="metric"><div class="metric-top"><span class="metric-label">Reserved</span><span class="metric-icon purple">R</span></div><strong id="mReserved">—</strong><small>customer stock waiting to pull</small></div>
+            <div class="metric"><div class="metric-top"><span class="metric-label">State Lab hold</span><span class="metric-icon cyan">−40</span></div><strong id="mHold">—</strong><small>good product not yet saleable</small></div>
+            <div class="metric"><div class="metric-top"><span class="metric-label">Storefront</span><span class="metric-icon amber">S</span></div><strong id="mStore">—</strong><small>imperfect product, not for sale</small></div>
+          </div>
+
+          <div class="dashboard-grid">
+            <section class="card">
+              <div class="card-header"><div><p class="kicker">Current stock</p><h2>Saleable inventory</h2></div><button class="btn btn-secondary btn-compact" data-quick="freezer" type="button">View freezer map</button></div>
+              <div id="inventoryTable"></div>
+            </section>
+            <div class="side-stack">
+              <section class="card"><div class="card-header"><div><p class="kicker">Needs attention</p><h2>Operator queues</h2></div></div><div id="attentionList" class="card-body"></div></section>
+              <section class="card"><div class="card-header"><div><p class="kicker">Safety check</p><h2>Ledger ↔ freezer</h2></div></div><div id="integritySummary"></div></section>
+            </div>
+          </div>
+        </section>
+
+        <section id="production" class="screen">
+          <div class="page-intro"><div><p class="kicker">Processing workflow</p><h1>Production & State Lab</h1><p>Record finished quantities once. Good units enter -40°F hold; imperfect units stay isolated as Storefront.</p></div></div>
+          <div class="grid-2">
+            <section class="card">
+              <div class="card-header"><div><p class="kicker">Step 1</p><h2>Record a production run</h2></div><span class="status-chip neutral">-40°F HOLD</span></div>
+              <div class="card-body">
+                <div class="form">
+                  <div class="form-row"><div class="field"><label for="prodJulian">Julian date</label><input id="prodJulian" type="number" min="1" max="366" placeholder="238"><span class="field-hint">1–366</span></div><div class="field"><label for="prodFlavor">Flavor</label><select id="prodFlavor"></select></div></div>
+                  <div class="form-row"><div class="field"><label for="prodSize">Package</label><select id="prodSize"><option value="3_GALLON">3 gallon</option><option value="48_OZ">48 oz</option></select></div><div class="field"><label for="prodTotal">Total produced</label><input id="prodTotal" type="number" min="1" value="1"></div></div>
+                  <div class="field"><label for="prodStore">Storefront / imperfect</label><input id="prodStore" type="number" min="0" value="0"><span class="field-hint">These units never enter saleable customer inventory.</span></div>
+                  <div class="info-strip">Good quantity = total produced − Storefront. The system sends good product to State Lab hold automatically.</div>
+                  <div class="form-footer"><button id="addProduction" class="btn btn-primary" type="button">Record production</button></div>
+                </div>
+              </div>
+            </section>
+            <section class="card">
+              <div class="card-header"><div><p class="kicker">Step 2</p><h2>State Lab release queue</h2></div><span class="status-chip warn">PENDING</span></div>
+              <div id="labQueue" class="card-body"></div>
+            </section>
+          </div>
+        </section>
+
+        <section id="orders" class="screen">
+          <div class="page-intro"><div><p class="kicker">Customer fulfillment</p><h1>Customer orders</h1><p>A reservation reduces available stock immediately. Physical on-hand and freezer stacks deduct only after pickup is confirmed.</p></div></div>
+          <div class="grid-2">
+            <section class="card">
+              <div class="card-header"><div><p class="kicker">Phone order</p><h2>Create reservation</h2></div></div>
+              <div class="card-body"><div class="form">
+                <div class="form-row"><div class="field"><label for="orderCustomer">Customer name</label><input id="orderCustomer" autocomplete="off"></div><div class="field"><label for="orderPhone">Phone <span class="field-hint">optional</span></label><input id="orderPhone" autocomplete="off"></div></div>
+                <div class="form-row"><div class="field"><label for="orderProduct">Product</label><select id="orderProduct"></select></div><div class="field"><label for="orderQty">Quantity</label><input id="orderQty" type="number" min="1" value="1"></div></div>
+                <button id="addOrderLine" class="btn btn-secondary" type="button">Add product to order</button>
+                <div id="orderCart"></div>
+                <div class="info-strip">Reservation affects AVAILABLE only. Nothing leaves physical freezer inventory until “Pulled · complete.”</div>
+                <div class="form-footer"><button id="reserveOrder" class="btn btn-primary" type="button">Reserve order</button></div>
+              </div></div>
+            </section>
+            <section class="card">
+              <div class="card-header"><div><p class="kicker">Fulfillment</p><h2>Orders waiting to pull</h2></div></div>
+              <div id="openOrders" class="card-body"></div>
+            </section>
+          </div>
+        </section>
+
+        <section id="dairy" class="screen">
+          <div class="page-intro"><div><p class="kicker">Internal withdrawal</p><h1>Dairy Bar pull</h1><p>Use this when product physically leaves the -20°F freezer for the Dairy Bar. FIFO location deduction happens immediately.</p></div></div>
+          <div class="grid-2">
+            <section class="card"><div class="card-header"><div><p class="kicker">Quick pull</p><h2>Withdraw saleable product</h2></div></div><div class="card-body"><div class="form">
+              <div class="field"><label for="dairyProduct">Product</label><select id="dairyProduct"></select></div>
+              <div class="field"><label for="dairyQty">Quantity</label><input id="dairyQty" type="number" min="1" value="1"></div>
+              <div class="info-strip">The database verifies inventory ↔ freezer integrity before the withdrawal and then deducts the oldest Julian stacks first.</div>
+              <div class="form-footer"><button id="dairySubmit" class="btn btn-primary" type="button">Confirm physical withdrawal</button></div>
+            </div></div></section>
+            <section class="card"><div class="card-header"><div><p class="kicker">Rule</p><h2>What this action does</h2></div></div><div class="card-body"><div class="queue"><div class="queue-item"><div class="queue-title">1 · Check available stock</div><div class="queue-sub">Reserved customer units stay protected.</div></div><div class="queue-item"><div class="queue-title">2 · Verify physical map</div><div class="queue-sub">Ledger and -20°F placements must agree.</div></div><div class="queue-item"><div class="queue-title">3 · Deduct FIFO stacks</div><div class="queue-sub">Oldest Julian product is pulled first.</div></div></div></div></section>
+          </div>
+        </section>
+
+        <section id="freezer" class="screen">
+          <div class="page-intro"><div><p class="kicker">Physical inventory</p><h1>Freezer map</h1><p>Search visually by freezer, wall, shelf, position, flavor and Julian run. Product locations are dynamic; shelves are not flavor-assigned.</p></div></div>
+          <section class="card"><div class="card-header"><div><p class="kicker">Mapped stacks</p><h2>Cold room positions</h2></div><div class="freezer-tabs"><button class="freezer-tab active" data-freezer="-20°F" type="button">-20°F saleable</button><button class="freezer-tab" data-freezer="-40°F" type="button">-40°F hold</button></div></div><div class="card-body"><div id="freezerRoom" class="freezer-room"></div></div></section>
+        </section>
+
+        <section id="count" class="screen">
+          <div class="page-intro"><div><p class="kicker">Controlled correction</p><h1>Physical stack count</h1><p>Count a specific -20°F stack and correct that location. The ledger adjustment and placement quantity update together.</p></div></div>
+          <div class="grid-2">
+            <section class="card"><div class="card-header"><div><p class="kicker">Reconcile</p><h2>Fix a stack quantity</h2></div></div><div class="card-body"><div class="form">
+              <div class="field"><label for="countPlacement">Physical stack</label><select id="countPlacement"></select></div>
+              <div class="field"><label for="countQty">What you actually counted</label><input id="countQty" type="number" min="0"></div>
+              <div class="field"><label for="countReason">Reason</label><input id="countReason" placeholder="Weekly verification / damaged unit / count correction"></div>
+              <div class="info-strip">Corrections never erase history. They create an auditable adjustment and keep the freezer map aligned with inventory.</div>
+              <div class="form-footer"><button id="countSubmit" class="btn btn-primary" type="button">Apply stack correction</button></div>
+            </div></div></section>
+            <section class="card"><div class="card-header"><div><p class="kicker">Control principle</p><h2>Hard count is an audit</h2></div></div><div class="card-body"><div class="queue"><div class="queue-item"><div class="queue-title">Do not overwrite totals blindly</div><div class="queue-sub">Every mismatch should have a physical reason and a traceable adjustment.</div></div><div class="queue-item"><div class="queue-title">Count the actual stack</div><div class="queue-sub">Julian + flavor + package + freezer position identifies what is being corrected.</div></div><div class="queue-item"><div class="queue-title">Keep the map trustworthy</div><div class="queue-sub">Customer and Dairy Bar withdrawals depend on physical location integrity.</div></div></div></div></section>
+          </div>
+        </section>
+
+        <section id="storefront" class="screen">
+          <div class="page-intro"><div><p class="kicker">Isolated inventory</p><h1>Storefront / imperfect product</h1><p>Cosmetically imperfect product is visible for accountability but never contributes to customer-order availability.</p></div></div>
+          <section class="card"><div class="card-header"><div><p class="kicker">Not for sale</p><h2>Storefront inventory</h2></div><span class="status-chip neutral">ISOLATED</span></div><div id="storefrontTable"></div></section>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <script type="module" src="./app.js"></script>
 </body>
 </html>
