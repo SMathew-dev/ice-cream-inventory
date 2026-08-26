@@ -1,5 +1,4 @@
--- Atomic inventory transaction layer
--- All inventory-affecting operations should execute in PostgreSQL transactions/RPCs.
+-- Atomic inventory transaction layer.
 
 create or replace function available_saleable(p_product_id uuid)
 returns integer language sql stable as $$
@@ -29,7 +28,7 @@ begin
   if not found then raise exception 'Order is not reservable'; end if;
 end; $$;
 
-create or replace function complete_order_pickup(p_order_id uuid, p_user text default null)
+create or replace function complete_order_pickup(p_order_id uuid, p_user uuid default null)
 returns void language plpgsql as $$
 declare r record;
 begin
@@ -37,8 +36,9 @@ begin
     raise exception 'Order is not eligible for completion';
   end if;
   for r in select * from order_items where order_id=p_order_id loop
-    insert into inventory_movements(product_id,movement_type,quantity,reference_type,reference_id,performed_by,reason)
-    values(r.product_id,'ORDER_COMPLETED',r.quantity,'CUSTOMER_ORDER',p_order_id::text,p_user,'Customer order pulled/completed');
+    insert into inventory_movements(product_id,movement_type,quantity,reference_type,reference_id,performed_by,reason,idempotency_key)
+    values(r.product_id,'ORDER_COMPLETED',r.quantity,'CUSTOMER_ORDER',p_order_id,p_user,'Customer order pulled/completed','complete-order:'||p_order_id::text||':'||r.id::text)
+    on conflict (idempotency_key) where idempotency_key is not null do nothing;
     update order_items set quantity_pulled=quantity where id=r.id;
   end loop;
   update customer_orders set status='COMPLETED',completed_at=now() where id=p_order_id;
@@ -51,7 +51,6 @@ begin
   if not found then raise exception 'Order cannot be cancelled'; end if;
 end; $$;
 
--- Recommended uniqueness guard for idempotent external actions.
 alter table inventory_movements add column if not exists idempotency_key text;
 create unique index if not exists inventory_movements_idempotency_key_uq
   on inventory_movements(idempotency_key) where idempotency_key is not null;
