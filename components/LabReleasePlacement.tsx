@@ -1,9 +1,8 @@
 'use client';
 import {useMemo,useState} from 'react';
-import type {PendingLot} from '../lib/db/contracts';
-import type {FreezerSlotRow} from '../lib/db/freezer-contracts';
+import type {PendingLot,FreezerSlot} from '../lib/db/contracts';
 
-export function LabReleasePlacement({lots,slots,onPass,onFail}:{lots:PendingLot[];slots:FreezerSlotRow[];onPass:(lotId:string,slotId:string)=>Promise<boolean>;onFail:(lotId:string)=>Promise<boolean>}){
+export function LabReleasePlacement({lots,slots,onPass,onFail}:{lots:PendingLot[];slots:FreezerSlot[];onPass:(lotId:string,slotId:string)=>Promise<boolean>;onFail:(lotId:string)=>Promise<boolean>}){
  const [selected,setSelected]=useState<PendingLot|null>(null); const [slot,setSlot]=useState(''); const [busy,setBusy]=useState(false);
  const saleableSlots=useMemo(()=>slots.filter(s=>s.freezer==='-20°F'&&s.active),[slots]);
  async function pass(){if(!selected||!slot)return;setBusy(true);const ok=await onPass(selected.id,slot);setBusy(false);if(ok){setSelected(null);setSlot('')}}
