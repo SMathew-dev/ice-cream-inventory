@@ -25,7 +25,11 @@ export function AuthGate({ children }: { children: ReactNode }) {
     setMessage('Working…');
     const result = mode === 'signin'
       ? await supabase.auth.signInWithPassword({ email, password })
-      : await supabase.auth.signUp({ email, password });
+      : await supabase.auth.signUp({
+          email,
+          password,
+          options: { emailRedirectTo: typeof window === 'undefined' ? undefined : window.location.href }
+        });
     if (result.error) setMessage(result.error.message);
     else if (result.data.session) setMessage('Signed in.');
     else setMessage('Account created. Check your email if confirmation is required.');
