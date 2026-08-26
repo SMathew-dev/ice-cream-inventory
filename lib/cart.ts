@@ -1,4 +1,4 @@
-import type { PackageSize } from './inventory';
+import type { PackageSizeDb as PackageSize } from './db/contracts';
 
 export type CartLine = {
   id: string;
