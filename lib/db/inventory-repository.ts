@@ -2,7 +2,7 @@ import { getSupabaseBrowserClient } from './supabase';
 import type { InventoryRepository, InventorySnapshot, NewOrderInput, NewProductionInput, OpenOrder, PendingLot, FreezerPlacement, FreezerSlot, PickPlanStep } from './contracts';
 
 export class SupabaseInventoryRepository implements InventoryRepository {
- private db=getSupabaseBrowserClient();
+ private db:any=getSupabaseBrowserClient();
  async getInventory():Promise<InventorySnapshot[]>{const {data,error}=await this.db.from('inventory_snapshot').select('*').order('flavor');if(error)throw error;return(data??[]).map((r:any)=>({productId:r.product_id,flavor:r.flavor,packageSize:r.package_size,onHand:r.on_hand,reserved:r.reserved,available:r.available,labHold:r.lab_hold,storefront:r.storefront}))}
  async getPendingLots():Promise<PendingLot[]>{const {data,error}=await this.db.from('pending_lab_lots').select('*').order('julian');if(error)throw error;return(data??[]).map((r:any)=>({id:r.id,julian:r.julian,flavor:r.flavor,packageSize:r.package_size,quantity:r.quantity,productionDate:r.production_date}))}
  async getOpenOrders():Promise<OpenOrder[]>{const {data,error}=await this.db.from('open_order_queue').select('*').order('created_at');if(error)throw error;const grouped=new Map<string,OpenOrder>();for(const r of (data??[]) as any[]){let o=grouped.get(r.order_id);if(!o){o={id:r.order_id,customerName:r.customer_name,customerPhone:r.customer_phone??undefined,status:r.status,createdAt:r.created_at,items:[]};grouped.set(r.order_id,o)}o.items.push({productId:r.product_id,flavor:r.flavor,packageSize:r.package_size,quantity:r.quantity-r.quantity_pulled})}return Array.from(grouped.values())}
