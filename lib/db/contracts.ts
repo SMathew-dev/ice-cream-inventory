@@ -8,6 +8,7 @@ export type PendingLot = { id:string; julian:number; flavor:string; packageSize:
 export type OpenOrder = { id:string; customerName:string; customerPhone?:string; status:'RESERVED'|'READY'; createdAt:string; items:Array<{productId:string;flavor:string;packageSize:PackageSizeDb;quantity:number}> };
 export type FreezerPlacement = { id:string; freezer:'-20°F'|'-40°F'; wall:'BACK'|'LEFT'|'RIGHT'|'ENTRANCE'; shelf:'TOP'|'MIDDLE'|'BOTTOM'; positionLabel:string; julian:number; flavor:string; packageSize:PackageSizeDb; quantity:number };
 export type FreezerSlot = { id:string; freezer:'-20°F'|'-40°F'; wall:'BACK'|'LEFT'|'RIGHT'|'ENTRANCE'; shelf:'TOP'|'MIDDLE'|'BOTTOM'; position:number; positionLabel:string; active:boolean };
+export type PickPlanStep = { placementId:string; productionRunId:string; julian:number; quantity:number; wall:string; shelf:string; position:number; positionLabel:string };
 export type NewProductionInput = { julian:number; flavor:string; packageSize:PackageSizeDb; totalProduced:number; storefrontQuantity:number };
 export type NewOrderInput = { customerName:string; customerPhone?:string; items:Array<{productId:string;quantity:number}> };
 
@@ -17,6 +18,7 @@ export interface InventoryRepository {
  getOpenOrders():Promise<OpenOrder[]>;
  getFreezerPlacements():Promise<FreezerPlacement[]>;
  getFreezerSlots():Promise<FreezerSlot[]>;
+ getPickPlan(productId:string,quantity:number):Promise<PickPlanStep[]>;
  addProduction(input:NewProductionInput):Promise<{runId:string}>;
  releaseLot(lotId:string,result:'PASS'|'FAIL'):Promise<void>;
  releaseAndPlaceLot(lotId:string,slotId:string):Promise<void>;
