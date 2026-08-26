@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#0b1220">
+  <title>Ice Cream Operations</title>
+  <link rel="stylesheet" href="./app.css">
+</head>
+<body>
+<div id="loading" class="loading hidden"><div class="loading-card"><span class="spinner"></span><span id="loadingText">Working…</span></div></div>
+
+<section id="auth" class="auth-shell">
+  <div class="auth-hero">
+    <div class="brand-row"><div class="brand-mark">IC</div><strong>Ice Cream Operations</strong></div>
+    <div class="auth-copy"><p class="eyebrow">DAIRY PLANT INVENTORY</p><h1>Production in. Product out. Inventory stays right.</h1><p>Track today’s production, State Lab hold, Storefront product, customer reservations and freezer withdrawals from one operator workflow.</p></div>
+    <div class="auth-flow"><span>Production</span><b>→</b><span>-40°F HOLD</span><b>→</b><span>PASS</span><b>→</b><span>-20°F SALEABLE</span></div>
+  </div>
+  <div class="auth-panel"><div class="auth-card"><p class="eyebrow">OPERATOR ACCESS</p><h2>Sign in</h2><p>Use your operator account to access the live inventory system.</p><form id="authForm" class="form"><label>Email<input id="email" type="email" autocomplete="email" required></label><label>Password<input id="password" type="password" autocomplete="current-password" minlength="6" required></label><button class="btn primary" type="submit">Sign in</button></form><button id="signup" class="btn secondary full" type="button">Create test operator account</button><div id="authMsg" class="auth-msg"></div></div></div>
+</section>
+
+<div id="app" class="app hidden">
+  <aside id="sidebar" class="sidebar">
+    <div class="logo"><div class="brand-mark">IC</div><div><strong>Ice Cream Ops</strong><small>Inventory control</small></div></div>
+    <nav class="nav" id="nav">
+      <button class="active" data-screen="dashboard">Overview</button>
+      <button data-screen="production">Production & Lab</button>
+      <button data-screen="orders">Customer Orders</button>
+      <button data-screen="dairy">Dairy Bar</button>
+      <button data-screen="freezer">Freezer Map</button>
+      <button data-screen="count">Physical Count</button>
+      <button data-screen="storefront">Storefront</button>
+    </nav>
+    <div class="sidebar-bottom"><div class="operator"><span id="operatorInitial">O</span><div><strong>Operator</strong><small id="operatorEmail">Signed in</small></div></div><button id="signout" class="signout">Sign out</button></div>
+  </aside>
+
+  <main class="main">
+    <header class="topbar"><div class="top-left"><button id="menu" class="menu">☰</button><div><strong id="pageTitle">Overview</strong><small id="pageSub">Live inventory and operator queues</small></div></div><div class="top-right"><button id="refresh" class="btn secondary compact">Refresh</button><span class="live"><i></i>LIVE</span></div></header>
+    <div class="workspace"><div id="msg"></div>
+
+      <section id="dashboard" class="screen active">
+        <div class="hero"><div><p class="eyebrow light">TODAY AT A GLANCE</p><h1>Everything operators need, without the spreadsheet.</h1><p>Good production stays on -40°F hold until State Lab passes it. Reservations reduce available inventory without changing physical stock.</p></div><div class="quick"><button data-go="production">+ Enter today’s production</button><button data-go="production">✓ Release passed flavors</button><button data-go="orders">+ New customer order</button><button data-go="dairy">→ Dairy Bar pull</button></div></div>
+        <div class="metrics"><div class="metric"><span>Available</span><strong id="mAvailable">—</strong><small>saleable less reserved</small></div><div class="metric"><span>Reserved</span><strong id="mReserved">—</strong><small>customer orders waiting</small></div><div class="metric"><span>-40°F hold</span><strong id="mHold">—</strong><small>waiting for State Lab</small></div><div class="metric"><span>Storefront</span><strong id="mStore">—</strong><small>not for sale</small></div></div>
+        <div class="dashboard-grid"><div class="card"><div class="card-head"><div><p class="eyebrow">LIVE STOCK</p><h2>Inventory</h2></div></div><div id="inventoryTable"></div></div><div class="side-stack"><div class="card"><div class="card-head"><div><p class="eyebrow">ACTION NEEDED</p><h2>Queues</h2></div></div><div id="attention" class="card-body"></div></div><div class="card"><div class="card-head"><div><p class="eyebrow">SAFETY</p><h2>Ledger ↔ freezer</h2></div></div><div id="integrity" class="card-body"></div></div></div></div>
+      </section>
+
+      <section id="production" class="screen">
+        <div class="page-intro"><p class="eyebrow">PROCESSING DAY</p><h1>Today’s production</h1><p>Enter every flavor made today on one sheet. Storefront units are separated immediately. Every good unit goes straight to -40°F State Lab hold.</p></div>
+        <div class="card production-card">
+          <div class="card-head production-head"><div><p class="eyebrow">STEP 1</p><h2>Enter production by flavor</h2></div><div class="julian-box"><label>Julian date</label><input id="prodJulian" type="number" min="1" max="366" placeholder="238"></div></div>
+          <div class="card-body no-pad"><datalist id="knownFlavors"></datalist><div class="production-table-head"><span>Flavor</span><span>Package</span><span>Made today</span><span>Storefront</span><span>Good → -40°F</span><span></span></div><div id="productionLines"></div><div class="production-actions"><button id="addProductionLine" class="btn secondary">+ Add another flavor</button><button id="saveProductionDay" class="btn primary">Save today’s production</button></div></div>
+          <div class="flow-strip"><span><b>MADE</b> operator enters total</span><span>→</span><span><b>STOREFRONT</b> isolated, never saleable</span><span>→</span><span><b>GOOD PRODUCT</b> automatically placed on -40°F HOLD</span></div>
+        </div>
+
+        <div class="card lab-card"><div class="card-head"><div><p class="eyebrow">STEP 2</p><h2>State Lab hold</h2><p class="head-note">Each flavor waits independently. Click PASS once the State Lab clears that flavor.</p></div><span class="pill amber">-40°F HOLD</span></div><div id="labQueue" class="card-body"></div></div>
+      </section>
+
+      <section id="orders" class="screen"><div class="page-intro"><p class="eyebrow">CUSTOMER FULFILLMENT</p><h1>Customer orders</h1><p>Reserve inventory when the phone order is taken. Deduct physical stock only after the product is pulled.</p></div><div class="two-col"><div class="card"><div class="card-head"><div><p class="eyebrow">NEW ORDER</p><h2>Reserve product</h2></div></div><div class="card-body form"><label>Customer name<input id="orderCustomer"></label><label>Phone <small>optional</small><input id="orderPhone"></label><div class="form-row"><label>Product<select id="orderProduct"></select></label><label>Quantity<input id="orderQty" type="number" min="1" value="1"></label></div><button id="addOrderLine" class="btn secondary">Add product</button><div id="orderCart"></div><button id="reserveOrder" class="btn primary">Reserve order</button></div></div><div class="card"><div class="card-head"><div><p class="eyebrow">WAITING</p><h2>Orders to pull</h2></div></div><div id="openOrders" class="card-body"></div></div></div></section>
+
+      <section id="dairy" class="screen"><div class="page-intro"><p class="eyebrow">INTERNAL WITHDRAWAL</p><h1>Dairy Bar pull</h1><p>Use this when product physically leaves -20°F for the Dairy Bar.</p></div><div class="card narrow"><div class="card-body form"><label>Product<select id="dairyProduct"></select></label><label>Quantity<input id="dairyQty" type="number" min="1" value="1"></label><button id="dairySubmit" class="btn primary">Confirm physical withdrawal</button></div></div></section>
+
+      <section id="freezer" class="screen"><div class="page-intro"><p class="eyebrow">PHYSICAL LOCATION</p><h1>Freezer map</h1><p>Find product by freezer, wall, shelf, position and Julian lot.</p></div><div class="freezer-tabs"><button class="freezer-tab active" data-freezer="-20°F">-20°F Saleable</button><button class="freezer-tab" data-freezer="-40°F">-40°F Hold</button></div><div id="staging"></div><div id="freezerRoom" class="freezer-room"></div></section>
+
+      <section id="count" class="screen"><div class="page-intro"><p class="eyebrow">RECONCILIATION</p><h1>Physical count</h1><p>Correct one physical stack and the audit ledger together.</p></div><div class="card narrow"><div class="card-body form"><label>Stack<select id="countPlacement"></select></label><label>I counted<input id="countQty" type="number" min="0"></label><label>Reason<input id="countReason" placeholder="Weekly count correction"></label><button id="countSubmit" class="btn primary">Fix stack count</button></div></div></section>
+
+      <section id="storefront" class="screen"><div class="page-intro"><p class="eyebrow">NOT FOR SALE</p><h1>Storefront inventory</h1><p>Cosmetically imperfect product stays visible but cannot fulfill customer orders.</p></div><div class="card"><div id="storefrontTable"></div></div></section>
+    </div>
+  </main>
+</div>
+<script type="module" src="./app.js"></script>
+</body>
+</html>
