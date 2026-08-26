@@ -5,7 +5,8 @@ do $$ declare t text; begin
     execute format('drop policy if exists operator_authenticated_access on public.%I',t);
     execute format('create policy operator_authenticated_access on public.%I for all to authenticated using (true) with check (true)',t);
     execute format('revoke all on public.%I from anon',t);
-    execute format('grant select,insert,update,delete on public.%I to authenticated',t);
+    execute format('revoke delete on public.%I from authenticated',t);
+    execute format('grant select,insert,update on public.%I to authenticated',t);
   end loop;
 end $$;
 
