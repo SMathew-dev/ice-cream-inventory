@@ -7,6 +7,7 @@
   <meta name="description" content="Operator-first ice cream inventory, State Lab release, freezer mapping and order control.">
   <title>Ice Cream Operations</title>
   <link rel="stylesheet" href="./app.css">
+  <link rel="stylesheet" href="./workflow.css">
 </head>
 <body>
   <div id="loadingOverlay" class="loading-overlay hidden" aria-live="polite">
@@ -54,181 +55,48 @@
 
       <div class="nav-section-label">Operations</div>
       <nav id="nav" class="nav">
-        <button class="active" data-screen="dashboard" type="button">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 13h6V4H4v9Zm0 7h6v-4H4v4Zm10 0h6v-9h-6v9Zm0-16v4h6V4h-6Z"/></svg>
-          Overview
-        </button>
-        <button data-screen="production" type="button">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 19V9l5 3V7l5 3V4h6v15H4Z"/><path d="M8 19v-3h3v3m3 0v-4h3v4"/></svg>
-          Production & Lab
-        </button>
-        <button data-screen="orders" type="button">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 3h12v18H6z"/><path d="M9 7h6M9 11h6M9 15h3"/></svg>
-          Customer Orders
-        </button>
-        <button data-screen="dairy" type="button">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M8 4h8l2 4v11H6V8l2-4Z"/><path d="M8 8h8M9 12h6"/></svg>
-          Dairy Bar
-        </button>
-        <button data-screen="freezer" type="button">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M5 10h14M15 6h1M15 14h1"/></svg>
-          Freezer Map
-        </button>
+        <button class="active" data-screen="dashboard" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 13h6V4H4v9Zm0 7h6v-4H4v4Zm10 0h6v-9h-6v9Zm0-16v4h6V4h-6Z"/></svg>Overview</button>
+        <button data-screen="production" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 19V9l5 3V7l5 3V4h6v15H4Z"/><path d="M8 19v-3h3v3m3 0v-4h3v4"/></svg>Production & Lab</button>
+        <button data-screen="orders" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 3h12v18H6z"/><path d="M9 7h6M9 11h6M9 15h3"/></svg>Customer Orders</button>
+        <button data-screen="dairy" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M8 4h8l2 4v11H6V8l2-4Z"/><path d="M8 8h8M9 12h6"/></svg>Dairy Bar</button>
+        <button data-screen="freezer" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M5 10h14M15 6h1M15 14h1"/></svg>Freezer Map</button>
       </nav>
 
       <div class="nav-section-label">Control</div>
       <nav class="nav">
-        <button data-screen="count" type="button">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 4h14v16H5z"/><path d="m8 9 2 2 5-5M8 15h8"/></svg>
-          Physical Count
-        </button>
-        <button data-screen="storefront" type="button">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 9h16l-2-5H6L4 9Z"/><path d="M5 9v11h14V9M9 20v-6h6v6"/></svg>
-          Storefront
-        </button>
+        <button data-screen="count" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 4h14v16H5z"/><path d="m8 9 2 2 5-5M8 15h8"/></svg>Physical Count</button>
+        <button data-screen="storefront" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 9h16l-2-5H6L4 9Z"/><path d="M5 9v11h14V9M9 20v-6h6v6"/></svg>Storefront</button>
       </nav>
 
-      <div class="sidebar-bottom">
-        <div class="operator-chip">
-          <div id="operatorInitial" class="operator-avatar">O</div>
-          <div class="operator-meta"><strong>Operator</strong><small id="operatorEmail">Signed in</small></div>
-        </div>
-        <button id="signout" class="signout" type="button">Sign out</button>
-      </div>
+      <div class="sidebar-bottom"><div class="operator-chip"><div id="operatorInitial" class="operator-avatar">O</div><div class="operator-meta"><strong>Operator</strong><small id="operatorEmail">Signed in</small></div></div><button id="signout" class="signout" type="button">Sign out</button></div>
     </aside>
 
     <main class="main">
-      <header class="topbar">
-        <div class="topbar-left">
-          <button id="mobileMenu" class="mobile-menu" type="button" aria-label="Open navigation">☰</button>
-          <div class="page-heading"><strong id="screenTitle">Operations</strong><small id="screenSubtitle">Live stock, queues and freezer integrity</small></div>
-        </div>
-        <div class="topbar-right">
-          <button id="refreshBtn" class="refresh-btn" type="button">↻ Refresh</button>
-          <div class="live-chip"><span class="live-dot"></span><span>LIVE</span><span>Supabase</span></div>
-        </div>
-      </header>
+      <header class="topbar"><div class="topbar-left"><button id="mobileMenu" class="mobile-menu" type="button" aria-label="Open navigation">☰</button><div class="page-heading"><strong id="screenTitle">Operations</strong><small id="screenSubtitle">Live stock, queues and freezer integrity</small></div></div><div class="topbar-right"><button id="refreshBtn" class="refresh-btn" type="button">↻ Refresh</button><div class="live-chip"><span class="live-dot"></span><span>LIVE</span><span>Supabase</span></div></div></header>
 
-      <div class="workspace">
-        <div id="msg"></div>
-
+      <div class="workspace"><div id="msg"></div>
         <section id="dashboard" class="screen active">
-          <div class="hero">
-            <div>
-              <p class="kicker">Plant inventory control</p>
-              <h1>One place for every ice cream movement.</h1>
-              <p>Operators record what happened. The system keeps available stock, reservations, State Lab hold and physical freezer locations synchronized.</p>
-            </div>
-            <div class="quick-actions">
-              <button class="quick-action" data-quick="production" type="button"><span class="quick-icon">＋</span><span>Add production</span></button>
-              <button class="quick-action" data-quick="production" type="button"><span class="quick-icon">✓</span><span>Release lab lot</span></button>
-              <button class="quick-action" data-quick="orders" type="button"><span class="quick-icon">#</span><span>New customer order</span></button>
-              <button class="quick-action" data-quick="dairy" type="button"><span class="quick-icon">→</span><span>Dairy Bar pull</span></button>
-            </div>
-          </div>
-
-          <div class="metrics">
-            <div class="metric"><div class="metric-top"><span class="metric-label">Available to order</span><span class="metric-icon blue">A</span></div><strong id="mAvailable">—</strong><small>saleable less active reservations</small></div>
-            <div class="metric"><div class="metric-top"><span class="metric-label">Reserved</span><span class="metric-icon purple">R</span></div><strong id="mReserved">—</strong><small>customer stock waiting to pull</small></div>
-            <div class="metric"><div class="metric-top"><span class="metric-label">State Lab hold</span><span class="metric-icon cyan">−40</span></div><strong id="mHold">—</strong><small>good product not yet saleable</small></div>
-            <div class="metric"><div class="metric-top"><span class="metric-label">Storefront</span><span class="metric-icon amber">S</span></div><strong id="mStore">—</strong><small>imperfect product, not for sale</small></div>
-          </div>
-
-          <div class="dashboard-grid">
-            <section class="card">
-              <div class="card-header"><div><p class="kicker">Current stock</p><h2>Saleable inventory</h2></div><button class="btn btn-secondary btn-compact" data-quick="freezer" type="button">View freezer map</button></div>
-              <div id="inventoryTable"></div>
-            </section>
-            <div class="side-stack">
-              <section class="card"><div class="card-header"><div><p class="kicker">Needs attention</p><h2>Operator queues</h2></div></div><div id="attentionList" class="card-body"></div></section>
-              <section class="card"><div class="card-header"><div><p class="kicker">Safety check</p><h2>Ledger ↔ freezer</h2></div></div><div id="integritySummary"></div></section>
-            </div>
-          </div>
+          <div class="hero"><div><p class="kicker">Plant inventory control</p><h1>One place for every ice cream movement.</h1><p>Operators record what happened. The system keeps available stock, reservations, State Lab hold and physical freezer locations synchronized.</p></div><div class="quick-actions"><button class="quick-action" data-quick="production" type="button"><span class="quick-icon">＋</span><span>Add production</span></button><button class="quick-action" data-quick="production" type="button"><span class="quick-icon">✓</span><span>Release lab lot</span></button><button class="quick-action" data-quick="orders" type="button"><span class="quick-icon">#</span><span>New customer order</span></button><button class="quick-action" data-quick="dairy" type="button"><span class="quick-icon">→</span><span>Dairy Bar pull</span></button></div></div>
+          <div class="metrics"><div class="metric"><div class="metric-top"><span class="metric-label">Available to order</span><span class="metric-icon blue">A</span></div><strong id="mAvailable">—</strong><small>saleable less active reservations</small></div><div class="metric"><div class="metric-top"><span class="metric-label">Reserved</span><span class="metric-icon purple">R</span></div><strong id="mReserved">—</strong><small>customer stock waiting to pull</small></div><div class="metric"><div class="metric-top"><span class="metric-label">State Lab hold</span><span class="metric-icon cyan">−40</span></div><strong id="mHold">—</strong><small>good product not yet saleable</small></div><div class="metric"><div class="metric-top"><span class="metric-label">Storefront</span><span class="metric-icon amber">S</span></div><strong id="mStore">—</strong><small>imperfect product, not for sale</small></div></div>
+          <div class="dashboard-grid"><section class="card"><div class="card-header"><div><p class="kicker">Current stock</p><h2>Saleable inventory</h2></div><button class="btn btn-secondary btn-compact" data-quick="freezer" type="button">View freezer map</button></div><div id="inventoryTable"></div></section><div class="side-stack"><section class="card"><div class="card-header"><div><p class="kicker">Needs attention</p><h2>Operator queues</h2></div></div><div id="attentionList" class="card-body"></div></section><section class="card"><div class="card-header"><div><p class="kicker">Safety check</p><h2>Ledger ↔ freezer</h2></div></div><div id="integritySummary"></div></section></div></div>
         </section>
 
-        <section id="production" class="screen">
-          <div class="page-intro"><div><p class="kicker">Processing workflow</p><h1>Production & State Lab</h1><p>Record finished quantities once. Good units enter -40°F hold; imperfect units stay isolated as Storefront.</p></div></div>
-          <div class="grid-2">
-            <section class="card">
-              <div class="card-header"><div><p class="kicker">Step 1</p><h2>Record a production run</h2></div><span class="status-chip neutral">-40°F HOLD</span></div>
-              <div class="card-body">
-                <div class="form">
-                  <div class="form-row"><div class="field"><label for="prodJulian">Julian date</label><input id="prodJulian" type="number" min="1" max="366" placeholder="238"><span class="field-hint">1–366</span></div><div class="field"><label for="prodFlavor">Flavor</label><select id="prodFlavor"></select></div></div>
-                  <div class="form-row"><div class="field"><label for="prodSize">Package</label><select id="prodSize"><option value="3_GALLON">3 gallon</option><option value="48_OZ">48 oz</option></select></div><div class="field"><label for="prodTotal">Total produced</label><input id="prodTotal" type="number" min="1" value="1"></div></div>
-                  <div class="field"><label for="prodStore">Storefront / imperfect</label><input id="prodStore" type="number" min="0" value="0"><span class="field-hint">These units never enter saleable customer inventory.</span></div>
-                  <div class="info-strip">Good quantity = total produced − Storefront. The system sends good product to State Lab hold automatically.</div>
-                  <div class="form-footer"><button id="addProduction" class="btn btn-primary" type="button">Record production</button></div>
-                </div>
-              </div>
-            </section>
-            <section class="card">
-              <div class="card-header"><div><p class="kicker">Step 2</p><h2>State Lab release queue</h2></div><span class="status-chip warn">PENDING</span></div>
-              <div id="labQueue" class="card-body"></div>
-            </section>
-          </div>
-        </section>
+        <section id="production" class="screen"><div class="page-intro"><div><p class="kicker">Processing workflow</p><h1>Production & State Lab</h1><p>Loading the daily flavor-by-flavor production sheet…</p></div></div></section>
 
-        <section id="orders" class="screen">
-          <div class="page-intro"><div><p class="kicker">Customer fulfillment</p><h1>Customer orders</h1><p>A reservation reduces available stock immediately. Physical on-hand and freezer stacks deduct only after pickup is confirmed.</p></div></div>
-          <div class="grid-2">
-            <section class="card">
-              <div class="card-header"><div><p class="kicker">Phone order</p><h2>Create reservation</h2></div></div>
-              <div class="card-body"><div class="form">
-                <div class="form-row"><div class="field"><label for="orderCustomer">Customer name</label><input id="orderCustomer" autocomplete="off"></div><div class="field"><label for="orderPhone">Phone <span class="field-hint">optional</span></label><input id="orderPhone" autocomplete="off"></div></div>
-                <div class="form-row"><div class="field"><label for="orderProduct">Product</label><select id="orderProduct"></select></div><div class="field"><label for="orderQty">Quantity</label><input id="orderQty" type="number" min="1" value="1"></div></div>
-                <button id="addOrderLine" class="btn btn-secondary" type="button">Add product to order</button>
-                <div id="orderCart"></div>
-                <div class="info-strip">Reservation affects AVAILABLE only. Nothing leaves physical freezer inventory until “Pulled · complete.”</div>
-                <div class="form-footer"><button id="reserveOrder" class="btn btn-primary" type="button">Reserve order</button></div>
-              </div></div>
-            </section>
-            <section class="card">
-              <div class="card-header"><div><p class="kicker">Fulfillment</p><h2>Orders waiting to pull</h2></div></div>
-              <div id="openOrders" class="card-body"></div>
-            </section>
-          </div>
-        </section>
+        <section id="orders" class="screen"><div class="page-intro"><div><p class="kicker">Customer fulfillment</p><h1>Customer orders</h1><p>A reservation reduces available stock immediately. Physical on-hand and freezer stacks deduct only after pickup is confirmed.</p></div></div><div class="grid-2"><section class="card"><div class="card-header"><div><p class="kicker">Phone order</p><h2>Create reservation</h2></div></div><div class="card-body"><div class="form"><div class="form-row"><div class="field"><label for="orderCustomer">Customer name</label><input id="orderCustomer" autocomplete="off"></div><div class="field"><label for="orderPhone">Phone <span class="field-hint">optional</span></label><input id="orderPhone" autocomplete="off"></div></div><div class="form-row"><div class="field"><label for="orderProduct">Product</label><select id="orderProduct"></select></div><div class="field"><label for="orderQty">Quantity</label><input id="orderQty" type="number" min="1" value="1"></div></div><button id="addOrderLine" class="btn btn-secondary" type="button">Add product to order</button><div id="orderCart"></div><div class="info-strip">Reservation affects AVAILABLE only. Nothing leaves physical freezer inventory until “Pulled · complete.”</div><div class="form-footer"><button id="reserveOrder" class="btn btn-primary" type="button">Reserve order</button></div></div></div></section><section class="card"><div class="card-header"><div><p class="kicker">Fulfillment</p><h2>Orders waiting to pull</h2></div></div><div id="openOrders" class="card-body"></div></section></div></section>
 
-        <section id="dairy" class="screen">
-          <div class="page-intro"><div><p class="kicker">Internal withdrawal</p><h1>Dairy Bar pull</h1><p>Use this when product physically leaves the -20°F freezer for the Dairy Bar. FIFO location deduction happens immediately.</p></div></div>
-          <div class="grid-2">
-            <section class="card"><div class="card-header"><div><p class="kicker">Quick pull</p><h2>Withdraw saleable product</h2></div></div><div class="card-body"><div class="form">
-              <div class="field"><label for="dairyProduct">Product</label><select id="dairyProduct"></select></div>
-              <div class="field"><label for="dairyQty">Quantity</label><input id="dairyQty" type="number" min="1" value="1"></div>
-              <div class="info-strip">The database verifies inventory ↔ freezer integrity before the withdrawal and then deducts the oldest Julian stacks first.</div>
-              <div class="form-footer"><button id="dairySubmit" class="btn btn-primary" type="button">Confirm physical withdrawal</button></div>
-            </div></div></section>
-            <section class="card"><div class="card-header"><div><p class="kicker">Rule</p><h2>What this action does</h2></div></div><div class="card-body"><div class="queue"><div class="queue-item"><div class="queue-title">1 · Check available stock</div><div class="queue-sub">Reserved customer units stay protected.</div></div><div class="queue-item"><div class="queue-title">2 · Verify physical map</div><div class="queue-sub">Ledger and -20°F placements must agree.</div></div><div class="queue-item"><div class="queue-title">3 · Deduct FIFO stacks</div><div class="queue-sub">Oldest Julian product is pulled first.</div></div></div></div></section>
-          </div>
-        </section>
+        <section id="dairy" class="screen"><div class="page-intro"><div><p class="kicker">Internal withdrawal</p><h1>Dairy Bar pull</h1><p>Use this when product physically leaves the -20°F freezer for the Dairy Bar. FIFO location deduction happens immediately.</p></div></div><div class="grid-2"><section class="card"><div class="card-header"><div><p class="kicker">Quick pull</p><h2>Withdraw saleable product</h2></div></div><div class="card-body"><div class="form"><div class="field"><label for="dairyProduct">Product</label><select id="dairyProduct"></select></div><div class="field"><label for="dairyQty">Quantity</label><input id="dairyQty" type="number" min="1" value="1"></div><div class="info-strip">The database verifies inventory ↔ freezer integrity before the withdrawal and then deducts the oldest Julian stacks first.</div><div class="form-footer"><button id="dairySubmit" class="btn btn-primary" type="button">Confirm physical withdrawal</button></div></div></div></section><section class="card"><div class="card-header"><div><p class="kicker">Rule</p><h2>What this action does</h2></div></div><div class="card-body"><div class="queue"><div class="queue-item"><div class="queue-title">1 · Check available stock</div><div class="queue-sub">Reserved customer units stay protected.</div></div><div class="queue-item"><div class="queue-title">2 · Verify physical map</div><div class="queue-sub">Ledger and -20°F placements must agree.</div></div><div class="queue-item"><div class="queue-title">3 · Deduct FIFO stacks</div><div class="queue-sub">Oldest Julian product is pulled first.</div></div></div></div></section></div></section>
 
-        <section id="freezer" class="screen">
-          <div class="page-intro"><div><p class="kicker">Physical inventory</p><h1>Freezer map</h1><p>Search visually by freezer, wall, shelf, position, flavor and Julian run. Product locations are dynamic; shelves are not flavor-assigned.</p></div></div>
-          <section class="card"><div class="card-header"><div><p class="kicker">Mapped stacks</p><h2>Cold room positions</h2></div><div class="freezer-tabs"><button class="freezer-tab active" data-freezer="-20°F" type="button">-20°F saleable</button><button class="freezer-tab" data-freezer="-40°F" type="button">-40°F hold</button></div></div><div class="card-body"><div id="freezerRoom" class="freezer-room"></div></div></section>
-        </section>
+        <section id="freezer" class="screen"><div class="page-intro"><div><p class="kicker">Physical inventory</p><h1>Freezer map</h1><p>Search visually by freezer, wall, shelf, position, flavor and Julian run. Product locations are dynamic; shelves are not flavor-assigned.</p></div></div><section class="card"><div class="card-header"><div><p class="kicker">Mapped stacks</p><h2>Cold room positions</h2></div><div class="freezer-tabs"><button class="freezer-tab active" data-freezer="-20°F" type="button">-20°F saleable</button><button class="freezer-tab" data-freezer="-40°F" type="button">-40°F hold</button></div></div><div class="card-body"><div id="freezerRoom" class="freezer-room"></div></div></section></section>
 
-        <section id="count" class="screen">
-          <div class="page-intro"><div><p class="kicker">Controlled correction</p><h1>Physical stack count</h1><p>Count a specific -20°F stack and correct that location. The ledger adjustment and placement quantity update together.</p></div></div>
-          <div class="grid-2">
-            <section class="card"><div class="card-header"><div><p class="kicker">Reconcile</p><h2>Fix a stack quantity</h2></div></div><div class="card-body"><div class="form">
-              <div class="field"><label for="countPlacement">Physical stack</label><select id="countPlacement"></select></div>
-              <div class="field"><label for="countQty">What you actually counted</label><input id="countQty" type="number" min="0"></div>
-              <div class="field"><label for="countReason">Reason</label><input id="countReason" placeholder="Weekly verification / damaged unit / count correction"></div>
-              <div class="info-strip">Corrections never erase history. They create an auditable adjustment and keep the freezer map aligned with inventory.</div>
-              <div class="form-footer"><button id="countSubmit" class="btn btn-primary" type="button">Apply stack correction</button></div>
-            </div></div></section>
-            <section class="card"><div class="card-header"><div><p class="kicker">Control principle</p><h2>Hard count is an audit</h2></div></div><div class="card-body"><div class="queue"><div class="queue-item"><div class="queue-title">Do not overwrite totals blindly</div><div class="queue-sub">Every mismatch should have a physical reason and a traceable adjustment.</div></div><div class="queue-item"><div class="queue-title">Count the actual stack</div><div class="queue-sub">Julian + flavor + package + freezer position identifies what is being corrected.</div></div><div class="queue-item"><div class="queue-title">Keep the map trustworthy</div><div class="queue-sub">Customer and Dairy Bar withdrawals depend on physical location integrity.</div></div></div></div></section>
-          </div>
-        </section>
+        <section id="count" class="screen"><div class="page-intro"><div><p class="kicker">Controlled correction</p><h1>Physical stack count</h1><p>Count a specific -20°F stack and correct that location. The ledger adjustment and placement quantity update together.</p></div></div><div class="grid-2"><section class="card"><div class="card-header"><div><p class="kicker">Reconcile</p><h2>Fix a stack quantity</h2></div></div><div class="card-body"><div class="form"><div class="field"><label for="countPlacement">Physical stack</label><select id="countPlacement"></select></div><div class="field"><label for="countQty">What you actually counted</label><input id="countQty" type="number" min="0"></div><div class="field"><label for="countReason">Reason</label><input id="countReason" placeholder="Weekly verification / damaged unit / count correction"></div><div class="info-strip">Corrections never erase history. They create an auditable adjustment and keep the freezer map aligned with inventory.</div><div class="form-footer"><button id="countSubmit" class="btn btn-primary" type="button">Apply stack correction</button></div></div></div></section><section class="card"><div class="card-header"><div><p class="kicker">Control principle</p><h2>Hard count is an audit</h2></div></div><div class="card-body"><div class="queue"><div class="queue-item"><div class="queue-title">Do not overwrite totals blindly</div><div class="queue-sub">Every mismatch should have a physical reason and a traceable adjustment.</div></div><div class="queue-item"><div class="queue-title">Count the actual stack</div><div class="queue-sub">Julian + flavor + package + freezer position identifies what is being corrected.</div></div><div class="queue-item"><div class="queue-title">Keep the map trustworthy</div><div class="queue-sub">Customer and Dairy Bar withdrawals depend on physical location integrity.</div></div></div></div></section></div></section>
 
-        <section id="storefront" class="screen">
-          <div class="page-intro"><div><p class="kicker">Isolated inventory</p><h1>Storefront / imperfect product</h1><p>Cosmetically imperfect product is visible for accountability but never contributes to customer-order availability.</p></div></div>
-          <section class="card"><div class="card-header"><div><p class="kicker">Not for sale</p><h2>Storefront inventory</h2></div><span class="status-chip neutral">ISOLATED</span></div><div id="storefrontTable"></div></section>
-        </section>
+        <section id="storefront" class="screen"><div class="page-intro"><div><p class="kicker">Isolated inventory</p><h1>Storefront / imperfect product</h1><p>Cosmetically imperfect product is visible for accountability but never contributes to customer-order availability.</p></div></div><section class="card"><div class="card-header"><div><p class="kicker">Not for sale</p><h2>Storefront inventory</h2></div><span class="status-chip neutral">ISOLATED</span></div><div id="storefrontTable"></div></section></section>
       </div>
     </main>
   </div>
 
   <script type="module" src="./app.js"></script>
+  <script type="module" src="./workflow.js"></script>
 </body>
 </html>
