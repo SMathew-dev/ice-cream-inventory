@@ -1,6 +1,7 @@
 'use client';
 
-import { FormEvent, ReactNode, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
+import type { FormEvent, ReactNode } from 'react';
 import type { Session } from '@supabase/supabase-js';
 import { getSupabaseBrowserClient } from '../lib/db/supabase';
 
