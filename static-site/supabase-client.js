@@ -19,3 +19,7 @@ export async function requireSession(){
   if(!data.session)throw new Error('Your operator session is not ready. Sign in again.');
   return data.session;
 }
+
+// Load the human-readable freezer-map layer after this shared client has
+// finished initializing. Dynamic import avoids a second auth client.
+setTimeout(()=>import('./map-v2.js').catch(()=>{}),0);
